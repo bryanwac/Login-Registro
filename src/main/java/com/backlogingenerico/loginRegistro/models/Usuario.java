@@ -22,8 +22,8 @@ import java.util.Set;
 @Entity
 @Table(name = "Usuario",
         uniqueConstraints = {
-                @UniqueConstraint(columnNames = "UseEmail"),
-                @UniqueConstraint(columnNames = "UseCPF")
+                @UniqueConstraint(columnNames = "UsuarioEmail"),
+                @UniqueConstraint(columnNames = "UsuarioCPF")
         })
 public class Usuario implements UserDetails {
 
