@@ -1,9 +1,6 @@
 package com.backlogingenerico.loginRegistro.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,6 +8,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashSet;
@@ -22,8 +22,8 @@ import java.util.Set;
 @Entity
 @Table(name = "Usuario",
         uniqueConstraints = {
-                @UniqueConstraint(columnNames = "UseEmail"),
-                @UniqueConstraint(columnNames = "UseCPF")
+                @UniqueConstraint(columnNames = "UsuarioEmail"),
+                @UniqueConstraint(columnNames = "UsuarioCPF")
         })
 public class Usuario implements UserDetails {
 
@@ -106,17 +106,6 @@ public class Usuario implements UserDetails {
         }
         return authorities;
     }
-
-    @Override
-    public String getPassword() {
-        return null;
-    }
-
-    @Override
-    public String getUsername() {
-        return null;
-    }
-
     @Override
     public boolean isAccountNonExpired() {
         return true;
