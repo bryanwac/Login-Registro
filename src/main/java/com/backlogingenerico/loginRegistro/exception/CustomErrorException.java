@@ -1,5 +1,7 @@
 package com.backlogingenerico.loginRegistro.exception;
 
+import org.springframework.http.HttpStatusCode;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.context.request.WebRequest;
@@ -26,14 +28,16 @@ public class CustomErrorException extends ResponseEntityExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     // error handle for @Valid
+
+    @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                   HttpHeaders headers,
-                                                                  HttpStatus status, WebRequest request) {
+                                                                  HttpStatusCode status,
+                                                                  WebRequest request) {
 
         ErrorDetails exceptionResponse = new ErrorDetails();
         exceptionResponse.setTimestamp(new Date());
         exceptionResponse.setStatus(status.value());
-
 
         //Get all errors
         List<String> errors = ex.getBindingResult()
@@ -47,8 +51,8 @@ public class CustomErrorException extends ResponseEntityExceptionHandler {
         exceptionResponse.setDetails(request.getDescription(false));
 
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
-
     }
+
 
     @ExceptionHandler(ApiException.class)
     public final ResponseEntity<ErrorDetails> handleNotFoundException(ApiException ex, WebRequest request) {

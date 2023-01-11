@@ -11,7 +11,6 @@ import com.backlogingenerico.loginRegistro.payload.response.MessageResponse;
 import com.backlogingenerico.loginRegistro.repositories.PermissaoRepository;
 import com.backlogingenerico.loginRegistro.repositories.UsuarioRepository;
 import com.backlogingenerico.loginRegistro.services.TokenService;
-import com.backlogingenerico.loginRegistro.services.UserDetailsService;
 import com.backlogingenerico.loginRegistro.services.UserService;
 import com.backlogingenerico.loginRegistro.util.EmailValidate;
 import jakarta.validation.Valid;
@@ -31,15 +30,13 @@ import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/home")
 public class OpenController {
 
     @Autowired
     UsuarioRepository usuarioRepository;
     @Autowired
     UserService usuarioService;
-    @Autowired
-    UserDetailsService userDetailsService;
+
     @Autowired
     PermissaoRepository permissaoRepository;
     @Autowired
@@ -48,12 +45,6 @@ public class OpenController {
     AuthenticationManager authenticationManager;
     @Autowired
     TokenService tokenService;
-
-
-    @GetMapping
-    public ResponseEntity<?> homePage() {
-        return ResponseEntity.ok().body("homepage");
-    }
 
     @PostMapping("/registro")
     public ResponseEntity<?> register(@Valid @RequestBody SignupRequest signupRequest) {
@@ -71,7 +62,8 @@ public class OpenController {
         }
 
         //Criando nova conta de user
-        Usuario usuario = new Usuario(signupRequest.getUsername(),
+        Usuario usuario = new Usuario(
+                             signupRequest.getUsername(),
                              signupRequest.getCpf(),
                              signupRequest.getTelefone(),
                              signupRequest.getEmail(),
@@ -83,17 +75,17 @@ public class OpenController {
 
         if (strRoles == null) {
             Permissao userRole = permissaoRepository.findByNome(EPermissao.PERM_USER)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                    .orElseThrow(() -> new RuntimeException("Erro: Permissão não encontrada."));
             roles.add(userRole);
         } else { // se a role pré-setada no register for admin, adiciona a ROLE_ADMIN pro user
             strRoles.forEach(role -> {
                 if ("admin".equals(role)) {
                     Permissao adminRole = permissaoRepository.findByNome(EPermissao.PERM_ADMIN)
-                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                            .orElseThrow(() -> new RuntimeException("Erro: Permissão não encontrada"));
                     roles.add(adminRole);
                 } else {
                     Permissao userRole = permissaoRepository.findByNome(EPermissao.PERM_USER)
-                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                            .orElseThrow(() -> new RuntimeException("Erro: Permissão não encontrada"));
                     roles.add(userRole);
                 }
             });

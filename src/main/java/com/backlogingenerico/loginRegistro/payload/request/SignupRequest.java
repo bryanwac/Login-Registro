@@ -13,13 +13,13 @@ import java.util.Set;
 @Setter
 @Data
 public class SignupRequest {
-    @NotBlank(message = "O nome é obrigatório.\n")
+    @NotNull(message = "O nome é obrigatório.\n")
     private String username;
 
-    @NotBlank(message = "O CPF é Obrigatório.\n")
+    @NotNull(message = "O CPF é Obrigatório.\n")
     private String cpf;
 
-    @NotBlank(message = "O telefone é obrigatório.\n")
+    @NotNull(message = "O telefone é obrigatório.\n")
     private String telefone;
 
     private boolean isWhatsapp = true;

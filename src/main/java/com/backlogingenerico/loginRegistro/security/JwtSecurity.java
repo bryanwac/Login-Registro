@@ -41,6 +41,8 @@ public class JwtSecurity {
                         auth
                                 .requestMatchers("/user/**").hasRole("USER")
                                 .requestMatchers("/admin/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.OPTIONS,"/registro").permitAll()
+                                .requestMatchers(HttpMethod.OPTIONS,"/login").permitAll()
                                 .anyRequest().permitAll()
                                 .and()
                                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
