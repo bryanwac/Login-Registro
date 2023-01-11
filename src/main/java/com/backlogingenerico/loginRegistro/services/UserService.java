@@ -5,12 +5,11 @@ import com.backlogingenerico.loginRegistro.DTO.UsuarioDto;
 import com.backlogingenerico.loginRegistro.exception.ApiException;
 import com.backlogingenerico.loginRegistro.models.Usuario;
 import com.backlogingenerico.loginRegistro.repositories.UsuarioRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -18,8 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
 
-    @Autowired
-    UsuarioRepository usuarioRepository;
+    private final UsuarioRepository usuarioRepository;
 
     public Usuario salvar(Usuario usuario) {
         return usuarioRepository.save(usuario);
@@ -42,7 +40,7 @@ public class UserService {
     }
 
     public Usuario getUserByUsername(String username) {
-        return usuarioRepository.findUserByUsername(username).orElseThrow(() -> new EntityNotFoundException("Usuario nao encontrado pelo nome."));
+        return usuarioRepository.findUserByEmail(username).orElseThrow(() -> new EntityNotFoundException("Usuario nao encontrado pelo nome."));
     }
 
     public Usuario getUserById(Long id) {

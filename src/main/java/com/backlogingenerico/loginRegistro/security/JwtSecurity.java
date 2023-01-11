@@ -1,6 +1,6 @@
 package com.backlogingenerico.loginRegistro.security;
 
-import com.backlogingenerico.loginRegistro.services.UserDetailsService;
+import com.backlogingenerico.loginRegistro.services.UserDetailsServico;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
@@ -22,12 +21,12 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class JwtSecurity {
 
     private final AuthSucessHandler authSucessHandler;
-    private final UserDetailsService userDetailsService;
+    private final UserDetailsServico userDetailsService;
     private final String secret;
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    public JwtSecurity(AuthSucessHandler authSucessHandler, UserDetailsService userDetailsService, @Value("${jwt.secret}") String secret) {
+    public JwtSecurity(AuthSucessHandler authSucessHandler, UserDetailsServico userDetailsService, @Value("${jwt.secret}") String secret) {
         this.authSucessHandler = authSucessHandler;
         this.userDetailsService = userDetailsService;
         this.secret = secret;
@@ -39,10 +38,10 @@ public class JwtSecurity {
                 .authorizeHttpRequests((auth) -> {
                     try {
                         auth
-                                .requestMatchers("/user/**").hasRole("USER")
-                                .requestMatchers("/admin/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.OPTIONS,"/registro").permitAll()
-                                .requestMatchers(HttpMethod.OPTIONS,"/login").permitAll()
+                                .antMatchers("/user/**").hasRole("PERM_USER")
+                                .antMatchers("/admin/**").hasRole("PERM_ADMIN")
+                                .antMatchers(HttpMethod.OPTIONS,"/registro").permitAll()
+                                .antMatchers(HttpMethod.OPTIONS,"/login").permitAll()
                                 .anyRequest().permitAll()
                                 .and()
                                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

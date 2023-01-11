@@ -1,9 +1,10 @@
 package com.backlogingenerico.loginRegistro.payload.request;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+
+import javax.validation.constraints.NotBlank;
 
 @Data
 @Getter
