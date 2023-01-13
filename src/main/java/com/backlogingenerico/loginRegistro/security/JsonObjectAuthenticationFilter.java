@@ -4,6 +4,7 @@ import com.backlogingenerico.loginRegistro.security.domain.LoginCredentials;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,6 +33,8 @@ public class JsonObjectAuthenticationFilter extends UsernamePasswordAuthenticati
                     authRequest.getPassword());
 
             setDetails(request, token);
+
+            SecurityContextHolder.getContext().setAuthentication(token);
 
             return this.getAuthenticationManager().authenticate(token);
         } catch (IOException e) {
